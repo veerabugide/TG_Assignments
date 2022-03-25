@@ -1,0 +1,200 @@
+openapi: 3.0.0
+info:
+  title: Fastrack Application
+  description: Fastrack application api
+  contact:
+    name: vasanth
+    url: http://tutorialspedia.com
+  version: 1.0.0
+servers: 
+  - url: http://myapi.com
+  - url: http://exampleapi.com
+paths:
+  /watches:
+    get:
+      tags:
+        - watchesOperations
+      description: Operatipn to fetch watches
+      parameters: 
+        - in: query
+          name: watchname
+          required: true
+          schema:
+            type: string
+            example: Fastrack
+      responses:
+        200:
+         description: success Response
+         content:
+           application/json:
+            schema:
+                $ref: "#/components/schemas/watches"
+  /watches/{id}:
+    description: Get watches based on Path Parameter
+    get:
+      tags:
+        - watchOperations
+      parameters: 
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+         description: success 
+         content:
+           application/json:
+            schema:
+                $ref: "#/components/schemas/watches"
+    delete:
+      tags:
+        - watchOperations
+      description: deletes a watch based on the ID supplied
+      operationId: watch mobile
+      parameters:
+        - name: id
+          in: path
+          description: ID of watch to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Watch deleted
+  /addWatch:              
+    post:
+      tags:
+        - watchOperations
+      description: Add a new Watch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                watchID:
+                  type: integer
+                  example: 1
+                watchName:
+                  type: string
+                  example: Fastrack
+                Price:
+                  type: integer
+                  example: 5000
+      responses:
+        201:
+          description: Watch successfully added
+  /updateWatch/{id}:
+    put:
+      tags:
+        - WatchOperations
+      description: "To update Watch"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/watch"
+      responses:
+        '204':
+          description: Watch update done
+  /watches/{name}:
+    description: Get Watch based on Path Parameter
+    get:
+      tags:
+        - WatchOperations
+      parameters: 
+        - in: path
+          name: name
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+         description: success 
+         content:
+           application/json:
+            schema:
+                $ref: "#/components/schemas/watches"  
+  /signUp:              
+    post:
+      tags:
+        - userOperations
+      description: New user registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userID:
+                  type: integer
+                  example: 1
+                userName:
+                  type: string
+                  example: vasanth
+                mobileNo:
+                  type: integer
+                  example: 1000000000
+      responses:
+        201:
+          description: User successfully created
+  /users:
+    get:
+      tags:
+        - userOperations
+      description: Operatipn to fetch users
+      parameters: 
+        - in: query
+          name: name
+          required: true
+          schema:
+            type: string
+            example: veera
+      responses:
+        200:
+         description: success Response
+         content:
+           application/json:
+            schema:
+                $ref: "#/components/schemas/users"
+components:
+  schemas:
+    watches:
+     type: object
+     properties:
+       WatchID:
+        type: integer
+        example: 1
+       WatchName:
+        type: string
+        example: Fastrack
+       Price:
+        type: integer
+        example: 5000
+    watch:
+      type: object
+      properties:
+        WatchID:
+          type: integer
+          example: 2
+        WatchName:
+          type: string
+          example: Fastrack
+        Price:
+          type: integer
+          example: 5000 
+    users:
+      type: array
+      items: 
+        properties:
+          userID: 
+            type: integer
+            example: 1
+          userName:
+            type: string
+            example: venkata
+          mobileNo:
+            type: integer
+            example: 20000000000

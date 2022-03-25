@@ -1,0 +1,314 @@
+openapi: 3.1.0
+info:
+  title: Fastrack Application
+  description: Fastrack application api
+  contact:
+    name: vasanth
+    url: http://tutorialspedia.com
+  version: '1.0.0'
+jsonSchemaDialect: https://json-schema.org/draft/2020-12/schema
+servers:
+- url: http://myapi.com
+  variables: {}
+- url: http://exampleapi.com
+  variables: {}
+paths:
+  /watches:
+    get:
+      tags:
+      - watchesOperations
+      summary: Watches_GET
+      description: Operatipn to fetch watches
+      operationId: Watches_GET
+      parameters:
+      - name: watchname
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          examples:
+          - Fastrack
+      responses:
+        '200':
+          description: success Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/watches'
+      deprecated: false
+    parameters: []
+  /watches/{id}:
+    get:
+      tags:
+      - watchOperations
+      summary: WatchesById_GET
+      description: Get watches based on Path Parameter
+      operationId: WatchesById_GET
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+      responses:
+        '200':
+          description: success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/watches'
+      deprecated: false
+    delete:
+      tags:
+      - watchOperations
+      summary: watch mobile
+      description: deletes a watch based on the ID supplied
+      operationId: watchmobile
+      parameters:
+      - name: id
+        in: path
+        description: ID of watch to delete
+        required: true
+        style: simple
+        schema:
+          type: integer
+          contentEncoding: int32
+      responses:
+        '204':
+          description: Watch deleted
+          headers: {}
+          content: {}
+      deprecated: false
+    parameters: []
+  /addWatch:
+    post:
+      tags:
+      - watchOperations
+      summary: AddWatch_POST
+      description: Add a new Watch
+      operationId: AddWatch_POST
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddWatchRequest'
+        required: false
+      responses:
+        '201':
+          description: Watch successfully added
+          headers: {}
+          content: {}
+      deprecated: false
+    parameters: []
+  /updateWatch/{id}:
+    put:
+      tags:
+      - WatchOperations
+      summary: UpdateWatchById_PUT
+      description: To update Watch
+      operationId: UpdateWatchById_PUT
+      parameters:
+      - name: id
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          $ref: '#/components/schemas/watch'
+      responses:
+        '204':
+          description: Watch update done
+          headers: {}
+          content: {}
+      deprecated: false
+    parameters: []
+  /watches/{name}:
+    get:
+      tags:
+      - WatchOperations
+      summary: WatchesByName_GET
+      description: Get Watch based on Path Parameter
+      operationId: WatchesByName_GET
+      parameters:
+      - name: name
+        in: path
+        description: ''
+        required: true
+        style: simple
+        schema:
+          type: string
+      responses:
+        '200':
+          description: success
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/watches'
+      deprecated: false
+    parameters: []
+  /signUp:
+    post:
+      tags:
+      - userOperations
+      summary: SignUp_POST
+      description: New user registration
+      operationId: SignUp_POST
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignUpRequest'
+        required: false
+      responses:
+        '201':
+          description: User successfully created
+          headers: {}
+          content: {}
+      deprecated: false
+    parameters: []
+  /users:
+    get:
+      tags:
+      - userOperations
+      summary: Users_GET
+      description: Operatipn to fetch users
+      operationId: Users_GET
+      parameters:
+      - name: name
+        in: query
+        description: ''
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          examples:
+          - veera
+      responses:
+        '200':
+          description: success Response
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/user'
+                description: ''
+                contentMediaType: application/json
+      deprecated: false
+    parameters: []
+components:
+  schemas:
+    watches:
+      title: watches
+      type: object
+      properties:
+        WatchID:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+        WatchName:
+          type: string
+          examples:
+          - Fastrack
+        Price:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 5000
+    watch:
+      title: watch
+      type: object
+      properties:
+        WatchID:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 2
+        WatchName:
+          type: string
+          examples:
+          - Fastrack
+        Price:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 5000
+    AddWatchRequest:
+      title: AddWatchRequest
+      type: object
+      properties:
+        watchID:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+        watchName:
+          type: string
+          examples:
+          - Fastrack
+        Price:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 5000
+    SignUpRequest:
+      title: SignUpRequest
+      type: object
+      properties:
+        userID:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+        userName:
+          type: string
+          examples:
+          - vasanth
+        mobileNo:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1000000000
+    user:
+      title: user
+      type: object
+      properties:
+        userID:
+          type: integer
+          contentEncoding: int32
+          examples:
+          - 1
+        userName:
+          type: string
+          examples:
+          - venkata
+        mobileNo:
+          type: integer
+          contentEncoding: int64
+          examples:
+          - 20000000000
+tags:
+- name: watchesOperations
+  description: ''
+- name: watchOperations
+  description: ''
+- name: WatchOperations
+  description: ''
+- name: userOperations
+  description: ''

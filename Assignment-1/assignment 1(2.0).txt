@@ -1,0 +1,295 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: Fastrack Application
+  description: Fastrack application api
+  contact:
+    name: vasanth
+    url: http://tutorialspedia.com
+host: myapi.com
+basePath: /
+securityDefinitions: {}
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /watches:
+    get:
+      description: Operatipn to fetch watches
+      summary: Watches_GET
+      tags:
+      - watchesOperations
+      operationId: Watches_GET
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: watchname
+        in: query
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: success Response
+          schema:
+            $ref: '#/definitions/watches'
+          headers: {}
+  /watches/{id}:
+    get:
+      description: Get watches based on Path Parameter
+      summary: WatchesById_GET
+      tags:
+      - watchOperations
+      operationId: WatchesById_GET
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ''
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/watches'
+          headers: {}
+    delete:
+      description: deletes a watch based on the ID supplied
+      summary: watch mobile
+      tags:
+      - watchOperations
+      operationId: watchmobile
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int32
+        description: ID of watch to delete
+      responses:
+        '204':
+          description: Watch deleted
+          headers: {}
+  /addWatch:
+    post:
+      description: Add a new Watch
+      summary: AddWatch_POST
+      tags:
+      - watchOperations
+      operationId: AddWatch_POST
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: false
+        enum:
+        - application/json
+        type: string
+        description: ''
+      - name: body
+        in: body
+        required: false
+        description: ''
+        schema:
+          $ref: '#/definitions/AddWatchRequest'
+      responses:
+        '201':
+          description: Watch successfully added
+          headers: {}
+  /updateWatch/{id}:
+    put:
+      description: To update Watch
+      summary: UpdateWatchById_PUT
+      tags:
+      - WatchOperations
+      operationId: UpdateWatchById_PUT
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: ''
+      responses:
+        '204':
+          description: Watch update done
+          headers: {}
+  /watches/{name}:
+    get:
+      description: Get Watch based on Path Parameter
+      summary: WatchesByName_GET
+      tags:
+      - WatchOperations
+      operationId: WatchesByName_GET
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: name
+        in: path
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: success
+          schema:
+            $ref: '#/definitions/watches'
+          headers: {}
+  /signUp:
+    post:
+      description: New user registration
+      summary: SignUp_POST
+      tags:
+      - userOperations
+      operationId: SignUp_POST
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: false
+        enum:
+        - application/json
+        type: string
+        description: ''
+      - name: body
+        in: body
+        required: false
+        description: ''
+        schema:
+          $ref: '#/definitions/SignUpRequest'
+      responses:
+        '201':
+          description: User successfully created
+          headers: {}
+  /users:
+    get:
+      description: Operatipn to fetch users
+      summary: Users_GET
+      tags:
+      - userOperations
+      operationId: Users_GET
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: name
+        in: query
+        required: true
+        type: string
+        description: ''
+      responses:
+        '200':
+          description: success Response
+          schema:
+            type: array
+            default: ''
+            items:
+              $ref: '#/definitions/user'
+          headers: {}
+definitions:
+  watches:
+    title: watches
+    type: object
+    properties:
+      WatchID:
+        example: 1
+        type: integer
+        format: int32
+      WatchName:
+        example: Fastrack
+        type: string
+      Price:
+        example: 5000
+        type: integer
+        format: int32
+  watch:
+    title: watch
+    type: object
+    properties:
+      WatchID:
+        example: 2
+        type: integer
+        format: int32
+      WatchName:
+        example: Fastrack
+        type: string
+      Price:
+        example: 5000
+        type: integer
+        format: int32
+  AddWatchRequest:
+    title: AddWatchRequest
+    type: object
+    properties:
+      watchID:
+        example: 1
+        type: integer
+        format: int32
+      watchName:
+        example: Fastrack
+        type: string
+      Price:
+        example: 5000
+        type: integer
+        format: int32
+  SignUpRequest:
+    title: SignUpRequest
+    type: object
+    properties:
+      userID:
+        example: 1
+        type: integer
+        format: int32
+      userName:
+        example: vasanth
+        type: string
+      mobileNo:
+        example: 1000000000
+        type: integer
+        format: int32
+  user:
+    title: user
+    type: object
+    properties:
+      userID:
+        example: 1
+        type: integer
+        format: int32
+      userName:
+        example: venkata
+        type: string
+      mobileNo:
+        example: 20000000000
+        type: integer
+        format: int64
+tags:
+- name: watchesOperations
+  description: ''
+- name: watchOperations
+  description: ''
+- name: WatchOperations
+  description: ''
+- name: userOperations
+  description: ''
