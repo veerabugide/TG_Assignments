@@ -1,0 +1,355 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: MEF
+  description: MEF application api
+  contact:
+    name: MEF
+    url: http://tutorialspedia.com
+host: myapi.com
+basePath: /
+securityDefinitions: {}
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /orders:
+    post:
+      description: placing an order
+      summary: Orders_POST
+      operationId: Orders_POST
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: false
+        enum:
+        - application/json
+        type: string
+        description: ''
+      - name: body
+        in: body
+        required: false
+        description: ''
+        schema:
+          type: array
+          items:
+            type: object
+            example:
+              href: string
+              id: string
+              '@type': string
+              '@baseType': string
+              '@schemaLocation': string
+              creationDate: '2021-08-11T07:17:35.698Z'
+              state: accepted
+              effectiveQuoteCompletionDate: '2021-08-11T07:17:35.698Z'
+              quoteItem:
+                - action: add
+                  id: string
+                  quoteItemPrice:
+                    - priceType: string
+                      price:
+                        dutyFreeAmount:
+                          unit: string
+                          value: 0
+                        taxIncludedAmount:
+                          unit: string
+                          value: 0
+                        taxRate: 0
+                      description: string
+                      name: string
+                      recurringChargePeriod: hour
+                      unitOfMeasure: string
+                  state: accepted
+                  dealReference: string
+                  agreementName: string
+                  note:
+                    - id: string
+                      text: string
+                      author: string
+                      date: '2021-08-11T07:17:35.698Z'
+                      source: buyer
+                  product:
+                    '@type': string
+                    '@baseType': string
+                    '@schemaLocation': string
+                  productOfferingQualificationItem:
+                    productOfferingQualificationId: string
+                    itemId: string
+                    productOfferingQualificationHref: string
+                    alternateProductProposalId: string
+                  quoteItemRelationship:
+                    - id: string
+                      relationshipType: string
+                  relatedContactInformation:
+                    - emailAddress: string
+                      name: string
+                      number: string
+                      numberExtension: string
+                      organization: string
+                      role: string
+                      postalAddress:
+                        city: string
+                        country: string
+                        geographicSubAddress:
+                          buildingName: string
+                          id: string
+                          levelNumber: string
+                          levelType: string
+                          privateStreetName: string
+                          privateStreetNumber: string
+                          subUnit:
+                            - subUnitNumber: string
+                              subUnitType: string
+                        locality: string
+                        postcode: string
+                        postcodeExtension: string
+                        stateOrProvince: string
+                        streetName: string
+                        streetNr: string
+                        streetNrLast: string
+                        streetNrLastSuffix: string
+                        streetNrSuffix: string
+                        streetSuffix: string
+                        streetType: string
+                  requestedQuoteItemInstallationInterval:
+                    amount: 0
+                    units: calendarMonths
+                  requestedQuoteItemTerm:
+                    duration:
+                      amount: 0
+                      units: calendarMonths
+                    rollInterval:
+                      amount: 0
+                      units: calendarMonths
+                    endOfTermAction: roll
+                  subjectToFeasibilityCheck: true
+                  quoteItemInstallationInterval:
+                    amount: 0
+                    units: calendarMonths
+                  quoteItemTerm:
+                    duration:
+                      amount: 0
+                      units: calendarMonths
+                    rollInterval:
+                      amount: 0
+                      units: calendarMonths
+                    endOfTermAction: roll
+                  terminationError:
+                    - value: string
+              description: string
+              externalId: string
+              instantSyncQuote: true
+              projectId: string
+              requestedQuoteCompletionDate: '2021-08-11T07:17:35.698Z'
+              buyerRequestedQuoteLevel: budgetary
+              note:
+                - id: string
+                  text: string
+                  author: string
+                  date: '2021-08-11T07:17:35.698Z'
+                  source: buyer
+              relatedContactInformation:
+                - emailAddress: string
+                  name: string
+                  number: string
+                  numberExtension: string
+                  organization: string
+                  role: string
+                  postalAddress:
+                    city: string
+                    country: string
+                    geographicSubAddress:
+                      buildingName: string
+                      id: string
+                      levelNumber: string
+                      levelType: string
+                      privateStreetName: string
+                      privateStreetNumber: string
+                      subUnit:
+                        - subUnitNumber: string
+                          subUnitType: string
+                    locality: string
+                    postcode: string
+                    postcodeExtension: string
+                    stateOrProvince: string
+                    streetName: string
+                    streetNr: string
+                    streetNrLast: string
+                    streetNrLastSuffix: string
+                    streetNrSuffix: string
+                    streetSuffix: string
+                    streetType: string
+              quoteLevel: budgetary
+
+      responses:
+        '200':
+          description: sucess
+          schema:
+            $ref: '#/definitions/e'
+definitions:
+  e:
+    title: response
+    example:
+      href: string
+      id: string
+      '@type': string
+      '@baseType': string
+      '@schemaLocation': string
+      creationDate: '2021-08-11T07:17:35.712Z'
+      state: accepted
+      effectiveQuoteCompletionDate: '2021-08-11T07:17:35.712Z'
+      quoteItem:
+        - action: add
+          id: string
+          quoteItemPrice:
+            - priceType: string
+              price:
+                dutyFreeAmount:
+                  unit: string
+                  value: 0
+                taxIncludedAmount:
+                  unit: string
+                  value: 0
+                taxRate: 0
+              description: string
+              name: string
+              recurringChargePeriod: hour
+              unitOfMeasure: string
+          state: accepted
+          dealReference: string
+          agreementName: string
+          note:
+            - id: string
+              text: string
+              author: string
+              date: '2021-08-11T07:17:35.712Z'
+              source: buyer
+          product:
+            '@type': string
+            '@baseType': string
+            '@schemaLocation': string
+          productOfferingQualificationItem:
+            productOfferingQualificationId: string
+            itemId: string
+            productOfferingQualificationHref: string
+            alternateProductProposalId: string
+          quoteItemRelationship:
+            - id: string
+              relationshipType: string
+          relatedContactInformation:
+            - emailAddress: string
+              name: string
+              number: string
+              numberExtension: string
+              organization: string
+              role: string
+              postalAddress:
+                city: string
+                country: string
+                geographicSubAddress:
+                  buildingName: string
+                  id: string
+                  levelNumber: string
+                  levelType: string
+                  privateStreetName: string
+                  privateStreetNumber: string
+                  subUnit:
+                    - subUnitNumber: string
+                      subUnitType: string
+                locality: string
+                postcode: string
+                postcodeExtension: string
+                stateOrProvince: string
+                streetName: string
+                streetNr: string
+                streetNrLast: string
+                streetNrLastSuffix: string
+                streetNrSuffix: string
+                streetSuffix: string
+                streetType: string
+          requestedQuoteItemInstallationInterval:
+            amount: 0
+            units: calendarMonths
+          requestedQuoteItemTerm:
+            duration:
+              amount: 0
+              units: calendarMonths
+            rollInterval:
+              amount: 0
+              units: calendarMonths
+            endOfTermAction: roll
+          subjectToFeasibilityCheck: true
+          quoteItemInstallationInterval:
+            amount: 0
+            units: calendarMonths
+          quoteItemTerm:
+            duration:
+              amount: 0
+              units: calendarMonths
+            rollInterval:
+              amount: 0
+              units: calendarMonths
+            endOfTermAction: roll
+          terminationError:
+            - value: string
+      description: string
+      externalId: string
+      instantSyncQuote: true
+      projectId: string
+      requestedQuoteCompletionDate: '2021-08-11T07:17:35.712Z'
+      buyerRequestedQuoteLevel: budgetary
+      note:
+        - id: string
+          text: string
+          author: string
+          date: '2021-08-11T07:17:35.712Z'
+          source: buyer
+      relatedContactInformation:
+        - emailAddress: string
+          name: string
+          number: string
+          numberExtension: string
+          organization: string
+          role: string
+          postalAddress:
+            city: string
+            country: string
+            geographicSubAddress:
+              buildingName: string
+              id: string
+              levelNumber: string
+              levelType: string
+              privateStreetName: string
+              privateStreetNumber: string
+              subUnit:
+                - subUnitNumber: string
+                  subUnitType: string
+            locality: string
+            postcode: string
+            postcodeExtension: string
+            stateOrProvince: string
+            streetName: string
+            streetNr: string
+            streetNrLast: string
+            streetNrLastSuffix: string
+            streetNrSuffix: string
+            streetSuffix: string
+            streetType: string
+      expectedQuoteCompletionDate: '2021-08-11T07:17:35.712Z'
+      quoteLevel: budgetary
+      stateChange:
+        - state: accepted
+          changeReason: string
+          changeDate: '2021-08-11T07:17:35.712Z'
+      validFor:
+        startDateTime: '1985-04-12T23:20:50.52Z'
+        endDateTime: '1985-04-12T23:20:50.52Z'

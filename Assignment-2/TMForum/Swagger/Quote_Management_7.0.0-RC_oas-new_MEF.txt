@@ -1,0 +1,1516 @@
+swagger: '2.0'
+info:
+  version: '7.0.0-RC'
+  title: Quote Management
+  description: "**This file forms part of MEF 115**\n\n**This specification represents MEF work in progress and is subject to change.** \n\nMEF-LSO Sonata Quote API allows to manage quote request & completion management between **Seller** and **Buyer**.\n\n3 different types of quotes are managed:\n- **Budgetary**: A quote that is provided quickly and with very little analysis such that the Buyer can get an idea of how much the requested Product Offering could cost.  Monthly Recurring Charges and Non-Recurring Charges, if specified, are subject to change. \n\n- **Firm – Subject to Feasibility Check**: A quote that is provided to the Buyer based on some, but not a complete, pre-order analysis.  At this stage, there is further analysis that the Seller can (and is willing) to undertake to provide a committed or firm price, but the Sell-er needs more time to complete this or the Seller may request that the Buyer use the Firm – Subject to Feasibility Check Quote to proceed to the Order process. Ordering may be possible based on the Firm – Subject to Feasibility Check Quote with some stipulations as to how cost identified during delivery is addressed. The Monthly Recurring Charges specified in the Quote Response are final.  Non-Recurring Charges specified in the Quote Response are subject to change.\n\n- **Firm**: A quote provided to the Buyer based on a pre-order analysis. All Monthly Recurring Charges and Non-Recurring Charges specified on a Firm Quote are committed.  A Firm Quote may expire at some date specified by the Seller.  \n\nQuote API has been designed by MEF basing on TMF 648 v4.0.0\n"
+  contact: {}
+host: serverRoot
+basePath: /
+securityDefinitions: {}
+schemes:
+- https
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /mefQuote:
+    get:
+      description: This operation retrieves a MefQuote entity. Attribute selection enabled for all first level attributes.
+      summary: listMefQuote
+      tags:
+      - mefQuote
+      operationId: listMefQuote
+      deprecated: false
+      produces:
+      - application/json;charset=utf-8
+      - application/json
+      parameters:
+      - name: fields
+        in: query
+        required: false
+        type: string
+        description: Comma-separated properties to be provided in response
+      - name: offset
+        in: query
+        required: false
+        type: integer
+        format: int32
+        description: Requested index for start of resources to be provided in response
+      - name: limit
+        in: query
+        required: false
+        type: integer
+        format: int32
+        description: Requested number of resources to be provided in response
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            default: ''
+            items:
+              $ref: '#/definitions/MefQuote'
+          headers:
+            X-Total-Count:
+              description: Total number of items matching criteria
+              type: string
+            X-Result-Count:
+              description: Actual number of items returned in the response body
+              type: string
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers: {}
+    post:
+      description: This operation creates a MefQuote entity.
+      summary: createMefQuote
+      tags:
+      - mefQuote
+      operationId: createMefQuote
+      deprecated: false
+      produces:
+      - application/json;charset=utf-8
+      - application/json
+      consumes:
+      - application/json;charset=utf-8
+      parameters:
+      - name: Content-Type
+        in: header
+        required: false
+        enum:
+        - application/json;charset=utf-8
+        type: string
+        description: ''
+      - name: body
+        in: body
+        required: true
+        description: The MefQuote to be created
+        schema:
+          $ref: '#/definitions/MefQuote_Create'
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/MefQuote'
+          headers: {}
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers: {}
+  /mefQuote/{id}:
+    get:
+      description: List or find MefQuote objects
+      summary: retrieveMefQuote
+      tags:
+      - mefQuote
+      operationId: retrieveMefQuote
+      deprecated: false
+      produces:
+      - application/json;charset=utf-8
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Identifier of the Service
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MefQuote'
+          headers: {}
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers: {}
+  /hub:
+    post:
+      description: Sets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.
+      summary: registerListener
+      tags:
+      - events subscription
+      operationId: registerListener
+      deprecated: false
+      produces:
+      - application/json;charset=utf-8
+      - application/json
+      consumes:
+      - application/json;charset=utf-8
+      parameters:
+      - name: Content-Type
+        in: header
+        required: false
+        enum:
+        - application/json;charset=utf-8
+        type: string
+        description: ''
+      - name: body
+        in: body
+        required: true
+        description: Data containing the callback endpoint to deliver the information
+        schema:
+          $ref: '#/definitions/EventSubscriptionInput'
+      responses:
+        '201':
+          description: Notified
+          schema:
+            $ref: '#/definitions/EventSubscription'
+          headers: {}
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers: {}
+  /hub/{id}:
+    delete:
+      description: Resets the communication endpoint address the service instance must use to deliver information about its health state, execution state, failures and metrics.
+      summary: unregisterListener
+      tags:
+      - events subscription
+      operationId: unregisterListener
+      deprecated: false
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        in: path
+        required: true
+        type: string
+        description: Identifier of the Service
+      responses:
+        '204':
+          description: Deleted
+          headers: {}
+        default:
+          description: Error
+          schema:
+            $ref: '#/definitions/Error'
+          headers: {}
+definitions:
+  MefQuote:
+    title: MefQuote
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      creationDate:
+        description: Date and time when the quote was created
+        type: string
+        format: date-time
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+      effectiveQuoteCompletionDate:
+        description: Date when the quote has been completed
+        type: string
+        format: date-time
+      quoteItem:
+        description: A quote items describe an action to be performed on a productOffering or a product in order to get pricing elements and condition.
+        type: array
+        items:
+          $ref: '#/definitions/GcQuoteItem2'
+        minItems: 1
+      description:
+        description: Description of the quote
+        type: string
+      externalId:
+        description: ID given by the consumer and only understandable by him (to facilitate his searches afterwards)
+        type: string
+      instantSyncQuote:
+        description: An indicator which when the value is "true" means that requester expects to get quoting result immediately in the response. If the indicator is true then the response code of 200 indicates the operation is successful otherwise a task is created with a response 201.
+        type: boolean
+      projectId:
+        description: An identifier that is used to group Quotes that represent a unit of functionality that is important to a Buyer. A Project can be used to relate multiple Quotes together.
+        type: string
+      requestedQuoteCompletionDate:
+        description: This is requested date - from quote requester - to get a complete response for this quote
+        type: string
+        format: date-time
+      buyerRequestedQuoteLevel:
+        $ref: '#/definitions/MefBuyerQuoteLevel'
+      note:
+        description: Free form text associated with the quote
+        type: array
+        items:
+          $ref: '#/definitions/MefNote'
+      relatedContactInformation:
+        description: Party playing a role for this qualification. If instantSyncQuote=false then the Buyer MUST specify Buyer Contact Information ('role=buyerContactInformation') and the Seller MUST specify Seller Contact Information ('role=sellerContactInformation')
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedContactInformation'
+      expectedQuoteCompletionDate:
+        description: This is expected date - from quote supplier - to be able to send back  a response for this quote
+        type: string
+        format: date-time
+      quoteLevel:
+        $ref: '#/definitions/MefSellerQuoteLevel'
+      stateChange:
+        description: State change for the quote
+        type: array
+        items:
+          $ref: '#/definitions/MefQuoteStateChange'
+      validFor:
+        $ref: '#/definitions/TimePeriod'
+    required:
+    - href
+    - id
+    - '@type'
+    - creationDate
+    - state
+    - effectiveQuoteCompletionDate
+    - quoteItem
+  MefSellerQuoteLevel:
+    title: MefSellerQuoteLevel
+    description: An indication of whether the Seller’s Quote Response is Budgetary, Firm – Subject to Feasibility Check, or Firm. The Seller Quote Level is provided by the Seller when responding to a Quote request.  This represents the lowest Quote Item Level of all Quote Items included in the Quote.
+    example: budgetary
+    type: string
+    enum:
+    - budgetary
+    - firmSubjectToFeasibilityCheck
+    - firm
+  MefQuoteStateChange:
+    title: MefQuoteStateChange
+    description: Holds the reached state, reasons and associated date the quote state changed, populated by the Seller.
+    type: object
+    properties:
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+      changeReason:
+        description: Additional comment related to state change
+        type: string
+      changeDate:
+        description: The date on when the state was reached
+        type: string
+        format: date-time
+  TimePeriod:
+    title: TimePeriod
+    description: A period of time, either as a deadline (endDateTime only) a startDateTime only, or both
+    type: object
+    properties:
+      startDateTime:
+        description: Start of the time period, using IETC-RFC-3339 format
+        example: 1985-04-12T23:20:50.52Z
+        type: string
+        format: date-time
+      endDateTime:
+        description: End of the time period, using IETC-RFC-3339 format
+        example: 1985-04-12T23:20:50.52Z
+        type: string
+        format: date-time
+  MefQuoteStateType:
+    title: MefQuoteStateType
+    description: Possible values for the state of the quote
+    example: accepted
+    type: string
+    enum:
+    - accepted
+    - answered
+    - approved.orderable
+    - approved.orderableAlternate
+    - cancelled
+    - insufficientInformationProvided
+    - unableToProvide
+    - inProgress
+    - inProgress.draft
+    - expired
+    - acknowledged
+    - declined
+  MefQuoteItem:
+    title: MefQuoteItem
+    type: object
+    properties:
+      action:
+        $ref: '#/definitions/GcItemActionType'
+      id:
+        description: Identifier of the quote item (generally it is a sequence number 01, 02, 03, ...)
+        type: string
+      quoteItemPrice:
+        description: Price for this quote item
+        type: array
+        items:
+          $ref: '#/definitions/GcQuotePrice1'
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+      dealReference:
+        description: A pre-agreed pricing modifier reference that the Seller is offering to the Buyer which will impact the price.
+        type: string
+      agreementName:
+        description: Name of the agreement. The name is unique between the Buyer and the Seller.
+        type: string
+      note:
+        description: Free form text associated with the quote item
+        type: array
+        items:
+          $ref: '#/definitions/MefNote'
+      product:
+        $ref: '#/definitions/Extensible'
+      productOfferingQualificationItem:
+        $ref: '#/definitions/MefProductOfferingQualificationItemRef'
+      quoteItemRelationship:
+        description: A relationship from item within a quote
+        type: array
+        items:
+          $ref: '#/definitions/GcQuoteItemRelationship'
+      relatedContactInformation:
+        description: Party playing a role for this qualification. If instantSyncQuote=false then the Buyer MUST specify Buyer Contact Information ('role=buyerContactInformation') and the Seller MUST specify Seller Contact Information ('role=sellerContactInformation')
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedContactInformation'
+      requestedQuoteItemInstallationInterval:
+        $ref: '#/definitions/MefDuration'
+      requestedQuoteItemTerm:
+        $ref: '#/definitions/MefItemTerm'
+      subjectToFeasibilityCheck:
+        description: For a Firm Quote Level indicates if the pricing requires a Feasibility Check. The Seller indicates if the Quote Item requires a Feasibility Check.  This is not used for a Budgetary Quote Level.
+        type: boolean
+      quoteItemInstallationInterval:
+        $ref: '#/definitions/MefDuration'
+      quoteItemTerm:
+        $ref: '#/definitions/MefItemTerm'
+      terminationError:
+        description: When the Seller cannot process the Quote Item Request, the Seller returns a text-based list of reasons here. If the `QuoteItem.state=rejected.insufficientInformationProvided`, the Seller MUST specify the `terminationError` attribute.
+        type: array
+        items:
+          $ref: '#/definitions/MefTerminationError'
+    required:
+    - action
+    - id
+    - quoteItemPrice
+    - state
+  GcQuote:
+    title: GcQuote
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      creationDate:
+        description: Date and time when the quote was created
+        type: string
+        format: date-time
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+      effectiveQuoteCompletionDate:
+        description: Date when the quote has been completed
+        type: string
+        format: date-time
+      quoteItem:
+        description: A quote items describe an action to be performed on a productOffering or a product in order to get pricing elements and condition.
+        type: array
+        items:
+          $ref: '#/definitions/GcQuoteItem'
+        minItems: 1
+    required:
+    - href
+    - id
+    - '@type'
+    - creationDate
+    - state
+    - effectiveQuoteCompletionDate
+    - quoteItem
+  MefQuote_Common:
+    title: MefQuote_Common
+    description: Quote can be used to negotiate service and product acquisition or modification between a customer and a service provider. Quote contain list of quote items, a reference to customer (partyRole), a list of productOffering and attached prices and conditions.
+    type: object
+    properties:
+      description:
+        description: Description of the quote
+        type: string
+      externalId:
+        description: ID given by the consumer and only understandable by him (to facilitate his searches afterwards)
+        type: string
+      instantSyncQuote:
+        description: An indicator which when the value is "true" means that requester expects to get quoting result immediately in the response. If the indicator is true then the response code of 200 indicates the operation is successful otherwise a task is created with a response 201.
+        type: boolean
+      projectId:
+        description: An identifier that is used to group Quotes that represent a unit of functionality that is important to a Buyer. A Project can be used to relate multiple Quotes together.
+        type: string
+      requestedQuoteCompletionDate:
+        description: This is requested date - from quote requester - to get a complete response for this quote
+        type: string
+        format: date-time
+      buyerRequestedQuoteLevel:
+        $ref: '#/definitions/MefBuyerQuoteLevel'
+      note:
+        description: Free form text associated with the quote
+        type: array
+        items:
+          $ref: '#/definitions/MefNote'
+      relatedContactInformation:
+        description: Party playing a role for this qualification. If instantSyncQuote=false then the Buyer MUST specify Buyer Contact Information ('role=buyerContactInformation') and the Seller MUST specify Seller Contact Information ('role=sellerContactInformation')
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedContactInformation'
+  MefDuration:
+    title: MefDuration
+    description: A time interval in a given unit of time
+    type: object
+    properties:
+      amount:
+        description: Time interval (number of seconds, minutes, hours, etc.)
+        type: integer
+        format: int32
+      units:
+        $ref: '#/definitions/Units'
+  MefQuotePrice:
+    title: MefQuotePrice
+    type: object
+    properties:
+      priceType:
+        description: indicate if the price is for recurrent or no-recurrent charge
+        type: string
+      price:
+        $ref: '#/definitions/GcPrice'
+      description:
+        description: Description of the quote/quote item price
+        type: string
+      name:
+        description: Name of the quote /quote item price
+        type: string
+      recurringChargePeriod:
+        $ref: '#/definitions/MefChargePeriod'
+      unitOfMeasure:
+        description: Unit of Measure if price depending on it (Gb, SMS volume, etc..)
+        type: string
+    required:
+    - priceType
+    - price
+  MefItemTerm:
+    title: MefItemTerm
+    description: The terms of the Quote Item. Used to describe a term (also known as commitment) for a Quote Item. Each Quote Item in a Quote Request could have a different Requested Quote Item Term. The Buyer specifies the longest term that they would accept. The Buyer may be willing to accept a shorter term. If the Seller responds with a term longer than the Buyer’s request, it is treated as an alternate response.
+    type: object
+    properties:
+      duration:
+        $ref: '#/definitions/MefDuration'
+      rollInterval:
+        $ref: '#/definitions/MefDuration'
+      endOfTermAction:
+        $ref: '#/definitions/MefEndOfTermAction'
+  MefQuoteItemStateType:
+    title: MefQuoteItemStateType
+    description: Possible values for the state of the quote item
+    example: approved.answered
+    type: string
+    enum:
+    - approved.answered
+    - approved.orderable
+    - approved.orderableAlternate
+    - inProgress
+    - inProgress.draft
+    - acknowledged
+    - rejected
+    - rejected.insufficientInformationProvided
+    - rejected.unableToProvide
+  MefTerminationError:
+    title: MefTerminationError
+    description: This indicates an error that caused an Item to be terminated.
+    type: object
+    properties:
+      value:
+        description: 'Text to describe the termination error - for example: incomplete information provided'
+        type: string
+  GcQuoteItem:
+    title: GcQuoteItem
+    description: A quote items describe an action to be performed on a productOffering or a product in order to get pricing elements and condition.
+    type: object
+    properties:
+      action:
+        $ref: '#/definitions/GcItemActionType'
+      id:
+        description: Identifier of the quote item (generally it is a sequence number 01, 02, 03, ...)
+        type: string
+      quoteItemPrice:
+        description: Price for this quote item
+        type: array
+        items:
+          $ref: '#/definitions/GcQuotePrice'
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+    required:
+    - action
+    - id
+    - quoteItemPrice
+    - state
+  MefQuoteItem_Common:
+    title: MefQuoteItem_Common
+    description: A quote items describe an action to be performed on a productOffering or a product in order to get pricing elements and condition.
+    type: object
+    properties:
+      id:
+        description: Identifier of the quote item (generally it is a sequence number 01, 02, 03, ...)
+        type: string
+      dealReference:
+        description: A pre-agreed pricing modifier reference that the Seller is offering to the Buyer which will impact the price.
+        type: string
+      action:
+        $ref: '#/definitions/MefProductActionType'
+      agreementName:
+        description: Name of the agreement. The name is unique between the Buyer and the Seller.
+        type: string
+      note:
+        description: Free form text associated with the quote item
+        type: array
+        items:
+          $ref: '#/definitions/MefNote'
+      product:
+        $ref: '#/definitions/Extensible'
+      productOfferingQualificationItem:
+        $ref: '#/definitions/MefProductOfferingQualificationItemRef'
+      quoteItemRelationship:
+        description: A relationship from item within a quote
+        type: array
+        items:
+          $ref: '#/definitions/GcQuoteItemRelationship'
+      relatedContactInformation:
+        description: Party playing a role for this qualification. If instantSyncQuote=false then the Buyer MUST specify Buyer Contact Information ('role=buyerContactInformation') and the Seller MUST specify Seller Contact Information ('role=sellerContactInformation')
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedContactInformation'
+      requestedQuoteItemInstallationInterval:
+        $ref: '#/definitions/MefDuration'
+      requestedQuoteItemTerm:
+        $ref: '#/definitions/MefItemTerm'
+  GcQuoteStateType:
+    title: GcQuoteStateType
+    description: Possible values for the state of the quote
+    example: acknowledged
+    type: string
+    enum:
+    - acknowledged
+    - rejected
+    - inProgress
+    - cancelled
+    - approved
+    - accepted
+    - declined
+  Entity:
+    title: Entity
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+    required:
+    - href
+    - id
+    - '@type'
+  MefBuyerQuoteLevel:
+    title: MefBuyerQuoteLevel
+    description: An indication of whether the Buyer’s Quote Request is for a Budgetary or Firm Quote Level. Set by the Buyer. Buyer Requested Quote Level contains the possible values and may be set by the Buyer on the Request. All Quote Items in a Quote have the same Quote Level.
+    example: budgetary
+    type: string
+    enum:
+    - budgetary
+    - firm
+  MefNote:
+    title: MefNote
+    type: object
+    properties:
+      id:
+        description: Identifier of the note within its containing entity
+        type: string
+      text:
+        description: Text of the note
+        type: string
+      author:
+        description: Author of the note
+        type: string
+      date:
+        description: Date of the note
+        type: string
+        format: date-time
+      source:
+        $ref: '#/definitions/MefNoteSourceType'
+    required:
+    - id
+    - text
+  MefRelatedContactInformation:
+    title: MefRelatedContactInformation
+    description: "Contact data for a person or organization that is involved in a given context. It is specified by the Seller (e.g. Seller Contact Information) or by the Buyer. \nReference: MEF 80 (Sn 8.1.9)"
+    type: object
+    properties:
+      emailAddress:
+        description: Email address
+        type: string
+      name:
+        description: Name of the contact
+        type: string
+      number:
+        description: Phone number
+        type: string
+      numberExtension:
+        description: Phone number extension
+        type: string
+      organization:
+        description: The organization or company that the contact belongs to
+        type: string
+      role:
+        description: A role the party plays in a given context.
+        type: string
+      postalAddress:
+        $ref: '#/definitions/MefFieldedAddress'
+    required:
+    - emailAddress
+    - name
+    - number
+    - role
+  MefChargePeriod:
+    title: MefChargePeriod
+    description: Used for a recurring charge to indicate period.
+    example: hour
+    type: string
+    enum:
+    - hour
+    - day
+    - week
+    - month
+    - year
+  MefPrice:
+    title: MefPrice
+    description: Provides all amounts (tax included, duty free, tax rate), used currency and percentage to apply for Price Alteration.
+    type: object
+    properties:
+      dutyFreeAmount:
+        $ref: '#/definitions/Money'
+      taxIncludedAmount:
+        $ref: '#/definitions/Money'
+      taxRate:
+        description: 'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
+        type: number
+        format: double
+  GcQuotePrice:
+    title: GcQuotePrice
+    description: Description of price and discount awarded
+    type: object
+    properties:
+      priceType:
+        description: indicate if the price is for recurrent or no-recurrent charge
+        type: string
+      price:
+        description: Provides all amounts (tax included, duty free, tax rate), used currency and percentage to apply for Price and Price Alteration.
+        type: object
+    required:
+    - priceType
+    - price
+  MefEndOfTermAction:
+    title: MefEndOfTermAction
+    description: The action the Seller will take once the term expires.
+    example: roll
+    type: string
+    enum:
+    - roll
+    - autoDisconnect
+    - autoRenew
+  GcItemActionType:
+    title: GcItemActionType
+    description: action to be performed on the entity managed by the item
+    example: add
+    type: string
+    enum:
+    - add
+    - modify
+    - delete
+  MefProductActionType:
+    title: MefProductActionType
+    description: Action to be applied to this portion of the Quote to the product referred by this Quote Item. | ProductActionType | MEF 80     | |------------------ | ---------- | | add               | INSTALL    | | modify            | CHANGE     | | delete            | DISCONNECT |
+    example: add
+    type: string
+    enum:
+    - add
+    - modify
+    - delete
+  Extensible:
+    title: Extensible
+    description: Base Extensible schema for use in TMForum Open-APIs - When used for in a schema it means that the Entity described by the schema  MUST be extended with the @type
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+    required:
+    - '@type'
+  MefProductOfferingQualificationItemRef:
+    title: MefProductOfferingQualificationItemRef
+    type: object
+    properties:
+      productOfferingQualificationId:
+        description: Unique identifier of a related entity.
+        type: string
+      itemId:
+        description: Id of an item of a product offering qualification
+        type: string
+      productOfferingQualificationHref:
+        description: Reference of the related entity.
+        type: string
+      alternateProductProposalId:
+        description: A unique identifier for this Alternate Product Proposal assigned by the Seller.
+        type: string
+    required:
+    - productOfferingQualificationId
+    - itemId
+  GcQuoteItemRelationship:
+    title: GcQuoteItemRelationship
+    description: Used to describe relationship between quote item. These relationship could have an impact on pricing and conditions
+    type: object
+    properties:
+      id:
+        description: Id of the related quote item (must be in the same quote)
+        type: string
+      relationshipType:
+        description: Relationship type as relies on, bundles, etc...
+        type: string
+    required:
+    - id
+    - relationshipType
+  Addressable:
+    title: Addressable
+    description: Base schema for adressable entities
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+    required:
+    - href
+    - id
+  MefNoteSourceType:
+    title: MefNoteSourceType
+    description: Indicates if the note is from Buyer or Seller.
+    example: buyer
+    type: string
+    enum:
+    - buyer
+    - seller
+  GcNote:
+    title: GcNote
+    description: Extra information about a given entity
+    type: object
+    properties:
+      id:
+        description: Identifier of the note within its containing entity
+        type: string
+      text:
+        description: Text of the note
+        type: string
+    required:
+    - id
+    - text
+  MefFieldedAddress:
+    title: MefFieldedAddress
+    description: "Contact data for a person or organization that is involved in a given context. It is specified by the Seller (e.g. Seller Contact Information) or by the Buyer. \nReference: MEF 80 (Sn 8.1.9)"
+    type: object
+    properties:
+      city:
+        description: The city that the address is in
+        type: string
+      country:
+        description: Country that the address is in
+        type: string
+      geographicSubAddress:
+        $ref: '#/definitions/MefSubAddress'
+      locality:
+        description: The locality that the address is in
+        type: string
+      postcode:
+        description: Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as zip code)
+        type: string
+      postcodeExtension:
+        description: An extension of a postal code. E.g. the part following the dash in an american urban property address
+        type: string
+      stateOrProvince:
+        description: The State or Province that the address is in
+        type: string
+      streetName:
+        description: Name of the street or other street type
+        type: string
+      streetNr:
+        description: Number identifying a specific property on a public street. It may be combined with streetNrLast for ranged addresses.
+        type: string
+      streetNrLast:
+        description: Last number in a range of street numbers allocated to a property
+        type: string
+      streetNrLastSuffix:
+        description: Last street number suffix for a ranged address
+        type: string
+      streetNrSuffix:
+        description: The first street number suffix
+        type: string
+      streetSuffix:
+        description: A modifier denoting a relative direction
+        type: string
+      streetType:
+        description: Alley, avenue, boulevard, brae, crescent, drive, highway, lane, terrace, parade, place, tarn, way, wharf
+        type: string
+    required:
+    - city
+    - country
+    - streetName
+  Money:
+    title: Money
+    description: A base / value business entity used to represent money
+    type: object
+    properties:
+      unit:
+        description: Currency (ISO4217 norm uses 3 letters to define the currency)
+        type: string
+      value:
+        description: A signed floating point number, the meaning of the sign is according to the context of the API that uses this Data type
+        type: number
+        format: double
+  MefProductRef:
+    title: MefProductRef
+    description: One or more services sold to a Buyer by a Seller.  A particular Product Offering defines the technical and commercial attributes and behaviors of a Product.
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      id:
+        description: Identifier of the referred entity.
+        type: string
+      name:
+        description: Name of the referred entity.
+        type: string
+      '@referredType':
+        description: The actual type of the target instance when needed for disambiguation.
+        type: string
+      href:
+        description: Hyperlink reference
+        type: string
+    required:
+    - '@type'
+    - id
+  MefProduct:
+    title: MefProduct
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+      status:
+        $ref: '#/definitions/GcProductStatusType'
+      place:
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedPlaceRefOrValue'
+      productConfiguration:
+        $ref: '#/definitions/MefProductConfiguration'
+      productOffering:
+        $ref: '#/definitions/Reference'
+      productRelationship:
+        type: array
+        items:
+          $ref: '#/definitions/MefProductRelationship'
+    required:
+    - '@type'
+    - href
+    - id
+  GcProductOfferingQualificationItemRef:
+    title: GcProductOfferingQualificationItemRef
+    description: It's a productOfferingQualification item that has been executed previously.
+    type: object
+    properties:
+      productOfferingQualificationId:
+        description: Unique identifier of a related entity.
+        type: string
+      itemId:
+        description: Id of an item of a product offering qualification
+        type: string
+    required:
+    - productOfferingQualificationId
+    - itemId
+  MefSubAddress:
+    title: MefSubAddress
+    description: Additional fields used to specify an address, as detailed as possible.
+    type: object
+    properties:
+      buildingName:
+        description: Allows for identification of places that require building name  as part of addressing information
+        type: string
+      id:
+        description: Unique Identifier of the subAddress
+        type: string
+      levelNumber:
+        description: Used where a level type may be repeated e.g. BASEMENT 1, BASEMENT 2
+        type: string
+      levelType:
+        description: Describes level types within a building
+        type: string
+      privateStreetName:
+        description: '"Private streets internal to a property (e.g. a university) may have internal names that are not recorded by the land title office'
+        type: string
+      privateStreetNumber:
+        description: Private streets numbers internal to a private street
+        type: string
+      subUnit:
+        description: Representation of a MEFSubUnit It is used for describing subunit within a subaddress  e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
+        type: array
+        items:
+          $ref: '#/definitions/MefSubUnit'
+  Reference:
+    title: Reference
+    description: Reference schema .
+    type: object
+    properties:
+      id:
+        description: Identifier of the referred entity.
+        type: string
+      name:
+        description: Name of the referred entity.
+        type: string
+      '@referredType':
+        description: The actual type of the target instance when needed for disambiguation.
+        type: string
+    required:
+    - id
+  EntityRef:
+    title: EntityRef
+    description: Entity reference schema to be use for all entityRef class.
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+  MefRelatedPlaceRefOrValue:
+    title: MefRelatedPlaceRefOrValue
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      role:
+        type: string
+    required:
+    - '@type'
+    - role
+  MefProductConfiguration:
+    title: MefProductConfiguration
+    description: MEF Product payload
+    type: object
+    properties:
+      '@schemaLocation':
+        description: A URI to the JSON schema file that defines the Product Specification for the product that is the subject of the Request.
+        type: string
+      '@type':
+        description: The name of the type, defined in the JSON schema specified above, for the product that is the subject of the Request. The named type must be a subclass of MEFProductConfiguration.
+        type: string
+  MefProductRelationship:
+    title: MefProductRelationship
+    type: object
+    properties:
+      id:
+        description: Id of the related product
+        type: string
+      relationshipType:
+        description: Relationship type as relies on, bundles, etc...
+        type: string
+      href:
+        description: Hyperlink to the product in Seller's inventory that is referenced Hyperlink MAY be used when providing response by the Seller Hyperlink MUST be ignored by the Seller in case it is provided by the Buyer in a request
+        type: string
+      groupingKey:
+        description: Related Product Identifier list is constructed from product ids having the same groupingKey and relationshipType.
+        type: string
+    required:
+    - id
+    - relationshipType
+  GcProduct:
+    title: GcProduct
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      status:
+        $ref: '#/definitions/GcProductStatusType'
+    required:
+    - href
+    - id
+    - '@type'
+  MefSubUnit:
+    title: MefSubUnit
+    description: Allows for sub unit identification
+    type: object
+    properties:
+      subUnitNumber:
+        description: The discriminator used for the subunit, often just a simple number but may also be a range.
+        type: string
+      subUnitType:
+        description: The type of subunit e.g.BERTH, FLAT, PIER, SUITE, SHOP, TOWER, UNIT, WHARF.
+        type: string
+    required:
+    - subUnitNumber
+    - subUnitType
+  GcRelatedPlaceRefOrValue:
+    title: GcRelatedPlaceRefOrValue
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      role:
+        type: string
+    required:
+    - '@type'
+    - role
+  MefPlaceRef:
+    title: MefPlaceRef
+    description: Place Reference - Place defines the places where the products' action must be done.
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      role:
+        type: string
+      id:
+        description: Identifier of the referred entity.
+        type: string
+      name:
+        description: Name of the referred entity.
+        type: string
+      '@referredType':
+        description: The actual type of the target instance when needed for disambiguation.
+        type: string
+      href:
+        description: Hyperlink reference
+        type: string
+    required:
+    - '@type'
+    - role
+    - id
+  MefPlace:
+    title: MefPlace
+    description: A place defined by value
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      role:
+        type: string
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+    required:
+    - '@type'
+    - role
+    - href
+    - id
+  GcProductRelationship:
+    title: GcProductRelationship
+    description: Used to describe relationship between product.
+    type: object
+    properties:
+      id:
+        description: Id of the related product
+        type: string
+      relationshipType:
+        description: Relationship type as relies on, bundles, etc...
+        type: string
+    required:
+    - id
+    - relationshipType
+  GcProductStatusType:
+    title: GcProductStatusType
+    description: Possible core values for the status of the product
+    example: active
+    type: string
+    enum:
+    - active
+    - terminated
+  MefFormattedAddress:
+    title: MefFormattedAddress
+    description: A type of Address that has discrete fields for each type of boundary or identifier with the exception of street and more specific location details, which are combined into a maximum of two strings based on local postal addressing conventions.
+    type: object
+    properties:
+      addrLine1:
+        description: The first address line in a formatted address
+        type: string
+      addrLine2:
+        description: The second address line in a formatted address
+        type: string
+      city:
+        description: The city that the address is in
+        type: string
+      country:
+        description: Country that the address is in
+        type: string
+      locality:
+        description: An area of defined or undefined boundaries within a local authority or other legislatively defined area, usually rural or semi rural in nature
+        type: string
+      postcode:
+        description: Descriptor for a postal delivery area, used to speed and simplify the delivery of mail (also known as ZIP code)
+        type: string
+      postcodeExtension:
+        description: An extension of a postal code. E.g. the part following the dash in an US urban property address
+        type: string
+      stateOrProvince:
+        description: The State or Province that the address is in
+        type: string
+    required:
+    - addrLine1
+    - city
+    - country
+  MefQuote_Create:
+    title: MefQuote_Create
+    type: object
+    properties:
+      href:
+        description: Hyperlink reference
+        type: string
+      id:
+        description: unique identifier
+        type: string
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      creationDate:
+        description: Date and time when the quote was created
+        type: string
+        format: date-time
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+      effectiveQuoteCompletionDate:
+        description: Date when the quote has been completed
+        type: string
+        format: date-time
+      quoteItem:
+        description: A quote items describe an action to be performed on a productOffering or a product in order to get pricing elements and condition.
+        type: array
+        items:
+          $ref: '#/definitions/GcQuoteItem2'
+        minItems: 1
+      description:
+        description: Description of the quote
+        type: string
+      externalId:
+        description: ID given by the consumer and only understandable by him (to facilitate his searches afterwards)
+        type: string
+      instantSyncQuote:
+        description: An indicator which when the value is "true" means that requester expects to get quoting result immediately in the response. If the indicator is true then the response code of 200 indicates the operation is successful otherwise a task is created with a response 201.
+        type: boolean
+      projectId:
+        description: An identifier that is used to group Quotes that represent a unit of functionality that is important to a Buyer. A Project can be used to relate multiple Quotes together.
+        type: string
+      requestedQuoteCompletionDate:
+        description: This is requested date - from quote requester - to get a complete response for this quote
+        type: string
+        format: date-time
+      buyerRequestedQuoteLevel:
+        $ref: '#/definitions/MefBuyerQuoteLevel'
+      note:
+        description: Free form text associated with the quote
+        type: array
+        items:
+          $ref: '#/definitions/MefNote'
+      relatedContactInformation:
+        description: Party playing a role for this qualification. If instantSyncQuote=false then the Buyer MUST specify Buyer Contact Information ('role=buyerContactInformation') and the Seller MUST specify Seller Contact Information ('role=sellerContactInformation')
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedContactInformation'
+      quoteLevel:
+        $ref: '#/definitions/MefSellerQuoteLevel'
+    required:
+    - href
+    - id
+    - '@type'
+    - creationDate
+    - state
+    - effectiveQuoteCompletionDate
+    - quoteItem
+  Error:
+    title: Error
+    description: Used when an API throws an Error, typically with a HTTP error response-code (3xx, 4xx, 5xx)
+    type: object
+    properties:
+      '@type':
+        description: When sub-classing, this defines the sub-class Extensible name
+        type: string
+      '@baseType':
+        description: When sub-classing, this defines the super-class
+        type: string
+      '@schemaLocation':
+        description: A URI to a JSON-Schema file that defines additional attributes and relationships
+        type: string
+      code:
+        description: Application relevant detail, defined in the API or a common list.
+        type: string
+      reason:
+        description: Explanation of the reason for the error which can be shown to a client user.
+        type: string
+      message:
+        description: More details and corrective actions related to the error which can be shown to a client user.
+        type: string
+      status:
+        description: HTTP Error code extension
+        type: string
+      referenceError:
+        description: URI of documentation describing the error.
+        type: string
+    required:
+    - '@type'
+    - code
+    - reason
+  EventSubscriptionInput:
+    title: EventSubscriptionInput
+    description: Sets the communication endpoint address the service instance must use to deliver notification information
+    type: object
+    properties:
+      callback:
+        description: The callback being registered.
+        type: string
+      query:
+        description: additional data to be passed
+        type: string
+    required:
+    - callback
+  EventSubscription:
+    title: EventSubscription
+    description: Sets the communication endpoint address the service instance must use to deliver notification information
+    type: object
+    properties:
+      id:
+        description: Id of the listener
+        type: string
+      callback:
+        description: The callback being registered.
+        type: string
+      query:
+        description: additional data to be passed
+        type: string
+    required:
+    - id
+    - callback
+  GcPrice:
+    title: GcPrice
+    description: Provides all amounts (tax included, duty free, tax rate), used currency and percentage to apply for Price and Price Alteration.
+    type: object
+    properties:
+      dutyFreeAmount:
+        $ref: '#/definitions/Money'
+      taxIncludedAmount:
+        $ref: '#/definitions/Money'
+      taxRate:
+        description: 'Price Tax Rate. Unit: [%]. E.g. value 16 stand for 16% tax.'
+        type: number
+        format: double
+  GcQuoteItem2:
+    title: GcQuoteItem2
+    description: A quote items describe an action to be performed on a productOffering or a product in order to get pricing elements and condition.
+    type: object
+    properties:
+      action:
+        $ref: '#/definitions/GcItemActionType'
+      id:
+        description: Identifier of the quote item (generally it is a sequence number 01, 02, 03, ...)
+        type: string
+      quoteItemPrice:
+        description: Price for this quote item
+        type: array
+        items:
+          $ref: '#/definitions/GcQuotePrice1'
+      state:
+        $ref: '#/definitions/MefQuoteStateType'
+      dealReference:
+        description: A pre-agreed pricing modifier reference that the Seller is offering to the Buyer which will impact the price.
+        type: string
+      agreementName:
+        description: Name of the agreement. The name is unique between the Buyer and the Seller.
+        type: string
+      note:
+        description: Free form text associated with the quote item
+        type: array
+        items:
+          $ref: '#/definitions/MefNote'
+      product:
+        $ref: '#/definitions/Extensible'
+      productOfferingQualificationItem:
+        $ref: '#/definitions/MefProductOfferingQualificationItemRef'
+      quoteItemRelationship:
+        description: A relationship from item within a quote
+        type: array
+        items:
+          $ref: '#/definitions/GcQuoteItemRelationship'
+      relatedContactInformation:
+        description: Party playing a role for this qualification. If instantSyncQuote=false then the Buyer MUST specify Buyer Contact Information ('role=buyerContactInformation') and the Seller MUST specify Seller Contact Information ('role=sellerContactInformation')
+        type: array
+        items:
+          $ref: '#/definitions/MefRelatedContactInformation'
+      requestedQuoteItemInstallationInterval:
+        $ref: '#/definitions/MefDuration'
+      requestedQuoteItemTerm:
+        $ref: '#/definitions/MefItemTerm'
+      subjectToFeasibilityCheck:
+        description: For a Firm Quote Level indicates if the pricing requires a Feasibility Check. The Seller indicates if the Quote Item requires a Feasibility Check.  This is not used for a Budgetary Quote Level.
+        type: boolean
+      quoteItemInstallationInterval:
+        $ref: '#/definitions/MefDuration'
+      quoteItemTerm:
+        $ref: '#/definitions/MefItemTerm'
+      terminationError:
+        description: When the Seller cannot process the Quote Item Request, the Seller returns a text-based list of reasons here. If the `QuoteItem.state=rejected.insufficientInformationProvided`, the Seller MUST specify the `terminationError` attribute.
+        type: array
+        items:
+          $ref: '#/definitions/MefTerminationError'
+    required:
+    - action
+    - id
+    - quoteItemPrice
+    - state
+  GcQuotePrice1:
+    title: GcQuotePrice1
+    description: Description of price and discount awarded
+    type: object
+    properties:
+      priceType:
+        description: indicate if the price is for recurrent or no-recurrent charge
+        type: string
+      price:
+        $ref: '#/definitions/GcPrice'
+      description:
+        description: Description of the quote/quote item price
+        type: string
+      name:
+        description: Name of the quote /quote item price
+        type: string
+      recurringChargePeriod:
+        $ref: '#/definitions/MefChargePeriod'
+      unitOfMeasure:
+        description: Unit of Measure if price depending on it (Gb, SMS volume, etc..)
+        type: string
+    required:
+    - priceType
+    - price
+  Units:
+    title: Units
+    description: Unit of time (seconds, minutes, hours, etc.)
+    example: calendarMonths
+    type: string
+    enum:
+    - calendarMonths
+    - calendarDays
+    - calendarHours
+    - calendarMinutes
+    - businessDays
+    - businessHours
+    - businessMinutes
+tags:
+- name: mefQuote
+  description: Operations for MefQuote Resource
+- name: notification listener
+  description: Notifications for Resource Lifecycle and event notifications
+- name: events subscription
+  description: Endpoints to register and terminate an Event Listener

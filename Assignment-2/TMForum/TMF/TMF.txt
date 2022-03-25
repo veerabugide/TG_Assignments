@@ -1,0 +1,333 @@
+swagger: '2.0'
+info:
+  version: '1.0.0'
+  title: TMF
+  description: TMF application api
+  contact:
+    name: TMF
+    url: http://tutorialspedia.com
+host: myapi.com
+basePath: /
+securityDefinitions: {}
+schemes:
+- http
+consumes:
+- application/json
+produces:
+- application/json
+paths:
+  /orders:
+    post:
+      description: placing an order
+      summary: Orders_POST
+      operationId: Orders_POST
+      deprecated: false
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      parameters:
+      - name: Content-Type
+        in: header
+        required: false
+        enum:
+        - application/json
+        type: string
+        description: ''
+      - name: body
+        in: body
+        required: false
+        description: ''
+        schema:
+          type: array
+          items:
+            type: object
+            example:
+              '@type': TMFQuote
+              category: BSBS Quote
+              description: Quote illustration
+              expectedFulfillmentStartDate: '2021-05-21T12:45:12.028Z'
+              expectedQuoteCompletionDate: '2021-05-14T12:45:12.028Z'
+              externalId:
+                - '@type': ExternalIdentifierExternalIdentifier
+                  owner: TMF
+                  externalIdentifierType: Quotenumber
+                  id: AK1
+              instantSyncQuote: false
+              requestedQuoteCompletionDate: '2021-05-14T12:45:12.028Z'
+              version: '1'
+              agreement:
+                - id: 7778-jj56
+                  href: https://host:port/agreementManagement/v4/agreement/7778-jj56
+                  name: Global Agreement
+                  '@type': AgreementRef
+                  '@referredType': MassAgreement
+              billingAccount:
+                - id: BA4569
+                  '@type': BillingAccountRef
+              contactMedium:
+                - '@type': EmailContactMedium
+                  contactMediumIdentifier: '11'
+                  preferred: true
+                  emailAddress: jean.pontus@PerfectCustomer.com
+              note:
+                - id: '1'
+                  author: Jean Pontus
+                  date: '2021-05-06T12:45:12.031Z'
+                  text: This is a quote request following today call
+                  '@type': Note
+              productOfferingQualification:
+                - id: 22ds-ty55
+                  '@type': ProductOfferingQualificationRef
+              quoteItem:
+                - id: '1'
+                  '@type': QuoteItem
+                  action: add
+                  quantity: 1
+                  product:
+                    '@type': ProductValue
+                    productCharacteristic:
+                      - '@type': StringCharacteristic
+                        id: Char1
+                        name: Voice Bundle
+                        value: unlimited
+                      - '@type': ObjectCharacteristic
+                        id: Char5
+                        name: Data Bundle
+                        value:
+                          volume: 50
+                          unit: Gb/month
+                    productSpecification:
+                      id: ssp7-ty89
+                      name: TMF Tariff Plan
+                      '@type': ProductSpecificationRef
+                  productOffering:
+                    id: 54gg-zza1
+                    name: TMF Tarif Plan 25
+                    '@type': ProductOfferingRef
+                - id: '2'
+                  '@type': QuoteItem
+                  action: add
+                  quantity: 10
+                  product:
+                    '@type': ProductValue
+                    productSpecification:
+                      id: qq45-ytr7
+                      name: Handset
+                      version: '1'
+                      '@type': ProductSpecificationRef
+                  productOffering:
+                    id: z789-78ga
+                    name: TMF handset T9+
+                    '@type': ProductOfferingRef
+                - id: '3'
+                  '@type': QuoteItem
+                  action: remove
+                  product:
+                    '@type': ProductRef
+                    id: '456'
+                    version: '1'
+              relatedParty:
+                - name: Jean Pontus
+                  role: Buyer Contact
+                  id: qsdd-9888
+                  '@referredType': Individual
+                - name: PerfectCustomer
+                  role: Buyer organization
+                  id: '55'
+                  '@referredType': Organization
+                - name: Joe Doe
+                  role: Seller Contact
+                  id: 45gh-gh89
+                  '@referredType': Individual
+
+      responses:
+        '200':
+          description: sucess
+          schema:
+            $ref: '#/definitions/e'
+definitions:
+  e:
+    title: response
+    example:
+      id: 12dd-78hg
+      href: https://host:port/quoteManagement/v4/quote/12dd-78hg
+      '@type': TMFQuote
+      category: BSBS Quote
+      description: Quote illustration
+      effectiveQuoteCompletionDate: 2021-05-013T12:45:12.028Z
+      expectedFulfillmentStartDate: '2021-05-21T12:45:12.028Z'
+      expectedQuoteCompletionDate: '2021-05-14T12:45:12.028Z'
+      externalId:
+        - '@type': ExternalIdentifierExternalIdentifier
+          owner: TMF
+          externalIdentifierType: Quotenumber
+          id: AK1
+      instantSyncQuote: false
+      quoteDate: '2021-05-06T12:45:12.028Z'
+      requestedQuoteCompletionDate: '2021-05-14T12:45:12.028Z'
+      version: '1'
+      agreement:
+        - id: 7778-jj56
+          href: https://host:port/agreementManagement/v4/agreement/7778-jj56
+          name: Global Agreement
+          '@type': AgreementRef
+          '@referredType': MassAgreement
+      billingAccount:
+        - id: BA4569
+          href: https://host:port/accountManagement/v4/billingAccount/BA4569
+          '@type': BillingAccountRef
+      contactMedium:
+        - '@type': EmailContactMedium
+          contactMediumIdentifier: '11'
+          preferred: true
+          emailAddress: jean.pontus@PerfectCustomer.com
+      note:
+        - id: '1'
+          author: Jean Pontus
+          date: '2021-05-06T12:45:12.031Z'
+          text: This is a quote request following today call
+          '@type': Note
+      productOfferingQualification:
+        - id: 22ds-ty55
+          '@type': ProductOfferingQualificationRef
+          href: https://host:port/productOfferingQualificationManagement/v4/productOfferingQualification/22ds-ty55
+      authorization:
+        - givenDate: '2021-05-08T12:45:12.031Z'
+          name: Discount validation
+          '@type': Authorization
+          requestedDate: '2021-05-09T12:45:12.031Z'
+          signatureRepresentation: Manager approval
+          state: validated
+          approver:
+            - name: Joe Doe
+              role: B2B Discount approver
+      quoteItem:
+        - id: '1'
+          '@type': QuoteItem
+          action: add
+          quantity: 1
+          state: approved
+          product:
+            '@type': ProductValue
+            productCharacteristic:
+              - '@type': StringCharacteristic
+                id: Char1
+                name: Voice Bundle
+                value: unlimited
+              - '@type': ObjectCharacteristic
+                id: Char5
+                name: Data Bundle
+                value:
+                  volume: 50
+                  unit: Gb/month
+            productSpecification:
+              id: ssp7-ty89
+              href: https://host:port/productCatalogManagement/v4/productSpecification/ssp7-ty89
+              name: TMF Tariff Plan
+              '@type': ProductSpecificationRef
+          productOffering:
+            id: 54gg-zza1
+            href: https://host:port/productCatalogManagement/v4/productSpecification/54gg-zza1
+            name: TMF Tarif Plan 25
+            '@type': ProductOfferingRef
+          quoteItemPrice:
+            - description: Tariff plan 25 fee
+              name: Tariff Plan 25 tariff
+              priceType: recurring
+              recurringChargePeriod: month
+              '@type': QuotePrice
+              price:
+                '@type': Price
+                taxRate: 16
+                dutyFreeAmount:
+                  unit: EUR
+                  value: 30
+                  '@type': Money
+                taxIncludedAmount:
+                  unit: EUR
+                  value: 34.8
+                  '@type': Money
+              priceAlteration:
+                - applicationDuration: 0
+                  description: Specific Discount for PerfectCustomer company
+                  name: 10% off
+                  priceType: recurring
+                  priority: 1
+                  recurringChargePeriod: month
+                  '@type': PriceAlteration
+                  price:
+                    percentage: 10
+                    '@type': Price
+        - id: '2'
+          '@type': QuoteItem
+          action: add
+          quantity: 10
+          state: approved
+          attachment:
+            - '@type': Attachment
+              attachmentType: brochure
+              description: handset brochure
+              mimeType: pdf
+              name: Handset commercial brochure.pdf
+              url: www.tmf_hanset/contentMangement/brochure.pdf
+              size:
+                amount: 3.7
+                units: Mb
+              validFor:
+                startDateTime: '2021-05-06T12:45:12.031Z'
+          product:
+            '@type': ProductValue
+            productSpecification:
+              id: qq45-ytr7
+              href: https://host:port/productCatalogManagement/v4/productSpecification/qq45-ytr7
+              name: Handset
+              '@type': ProductSpecificationRef
+              version: '1'
+          productOffering:
+            id: z789-78ga
+            href: https://host:port/productCatalogManagement/v4/productOffering/z789-78ga
+            name: TMF handset T9+
+            '@type': ProductOfferingRef
+          quoteItemPrice:
+            - description: Handset
+              name: Handset Fee
+              priceType: nonRecurring
+              '@type': QuotePrice
+              price:
+                '@type': Price
+                taxRate: 16
+                dutyFreeAmount:
+                  unit: EUR
+                  value: 350
+                  '@type': Money
+                taxIncludedAmount:
+                  unit: EUR
+                  value: 406
+                  '@type': Money
+        - id: '3'
+          '@type': QuoteItem
+          action: remove
+          state: approved
+          product:
+            '@type': ProductRef
+            id: '456'
+            href: https://host:port/productInventory/v4/product/456
+            version: '1'
+      relatedParty:
+        - name: Jean Pontus
+          role: Buyer Contact
+          id: qsdd-9888
+          '@referredType': Individual
+        - name: PerfectCustomer
+          role: Buyer organization
+          id: '55'
+          '@referredType': Organization
+        - name: Joe Doe
+          role: Seller Contact
+          id: 45gh-gh89
+          '@referredType': Individual
+      state: approved
+      validFor:
+        endDateTime: '2021-05-06T12:45:12.033Z'
+        startDateTime: '2021-05-06T12:45:12.033Z'

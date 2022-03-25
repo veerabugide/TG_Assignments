@@ -1,0 +1,389 @@
+openapi: 3.0.0
+info:
+  title: Historical Conditions - Hourly - v3.0
+  description: The Historical Conditions are generated from The Weather Company (TWC) Currents On Demand (COD) system. The API provides information on temperature, precipitation and other related weather observations elements as well as date/time, weather icon codes and phrases.
+  contact: {}
+  version: '3.0'
+servers:
+  - url: https://api.weather.com/v3
+    variables: {}
+paths:
+  /wx/conditions/historical/hourly/1day:
+    get:
+      tags:
+        - By Geocode
+      summary: getSunV3HistoricalOneDayHourlyConditions
+      description: The Historical Conditions are generated from The Weather Company (TWC) Currents On Demand (COD) system. The API provides information on temperature, precipitation and other related weather observations elements as well as date/time, weather icon codes and phrases.
+      externalDocs:
+        description: Find out more
+        url: https://goo.gl/NvkSgS
+      operationId: getSunV3HistoricalOneDayHourlyConditions
+      parameters:
+        - name: geocode
+          in: query
+          description: Degrees latitude,longitude using WGS84 geocode coordinate reference system
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: units
+          in: query
+          description: The units of measure to return the data in. For example, e=Imperial (English), m=Metric, h=Hybrid (UK), s=Metric SI. Some APIs may not support the Metric SI unit of measure. The parameter must be present but can be null/empty.
+          required: true
+          style: form
+          explode: true
+          schema:
+            $ref: '#/components/schemas/units'
+        - name: language
+          in: query
+          description: The language to return the response in. For example, en-US, es-MX, fr-FR
+          required: true
+          style: form
+          explode: true
+          schema:
+            type: string
+        - name: format
+          in: query
+          description: The format to return the response in. For example, json.
+          required: true
+          style: form
+          explode: true
+          schema:
+            enum:
+              - json
+            type: string
+            example: json
+        - name: par
+          in: query
+          description: Idetifies source of the user.
+          style: form
+          explode: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          headers: {}
+          content:
+            application/json; charset=UTF-8:
+              schema:
+                $ref: '#/components/schemas/getSunV3HistoricalOneDayHourlyConditionsResponse'
+      deprecated: false
+components:
+  schemas:
+    units:
+      title: units
+      enum:
+        - e
+        - m
+        - h
+        - s
+      type: string
+      example: e
+    getSunV3HistoricalOneDayHourlyConditionsResponse:
+      title: getSunV3HistoricalOneDayHourlyConditionsResponse
+      type: object
+      properties:
+        cloudCeiling:
+          type: array
+          items: {}
+          description: 'Base of lowest Mostly Cloudy or Cloudy layer. Note: This field can be NULL for any geographic location depending weather conditions'
+          example:
+            - 1200
+            - 'null'
+        dayOfWeek:
+          type: array
+          items: {}
+          description: Day of week
+          example:
+            - Monday
+            - Tuesday
+            - Wednesday
+            - Thursday
+        dayOrNight:
+          type: array
+          items: {}
+          description: Daytime or nighttime of the local apparent time of the location
+          example:
+            - D
+            - 'N'
+            - X
+        expirationTimeUtc:
+          type: array
+          items: {}
+          description: Expiration time in UNIX in UNIX epoch value
+          example:
+            - 1528714800
+            - 1528801200
+            - 1528887600
+            - 1528974000
+        iconCode:
+          type: array
+          items: {}
+          description: This number is the key to the weather icon lookup. The data field shows the icon number that is matched to represent the observed weather conditions. Please refer to the Forecast Icon Code, Weather Phrases and Images document.
+          example:
+            - 0
+            - 30
+            - 48
+        precip24Hour:
+          type: array
+          items: {}
+          description: 'Rolling twenty-four hour liquid precip amount. Note: This field will be NULL outside of CONUS and Europe'
+          example:
+            - 0
+            - 0.06
+            - 'null'
+        pressureAltimeter:
+          type: array
+          items: {}
+          description: Barometric pressure is the pressure exerted by the atmosphere at the Earth’s surface due to the weight of the air. Expressed in inches of mercury when units=a (i.e. units='US'), expressed in millibars when units=Metric, Hybrid or Metric_SI
+          example:
+            - 30.14
+            - 30.18
+        pressureChange:
+          type: array
+          items: {}
+          description: 'Change in pressure in the last three hours (inches of mercury for units=US, millibars otherwise) Note: This field will be NULL outside of CONUS and Europe.'
+          example:
+            - -0.05
+            - -0.03
+            - 'null'
+        pressureMeanSeaLevel:
+          type: array
+          items: {}
+          description: Mean sea level pressure in millibars
+          example:
+            - 1020.6
+            - 1022.4
+        pressureTendencyCode:
+          type: array
+          items: {}
+          description: 'Code of pressure tendency. Note: This field will be NULL outside of CONUS and Europe 0 = steady, 1 = rising, 2 = falling, 3 = rising rapidly, 4 = falling rapidly'
+          example:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 'null'
+        pressureTendencyTrend:
+          type: array
+          items: {}
+          description: 'Descriptive text of pressure tendency over the past three hours. Note: This field will be NULL outside of CONUS and Europe'
+          example:
+            - Steady
+            - Rising
+            - Rapidly Rising
+            - Falling
+            - Rapidly Falling
+            - 'null'
+        relativeHumidity:
+          type: array
+          items: {}
+          description: The relative humidity of the air, which is defined as the ratio of the amount of water vapor in the air to the amount of vapor required to bring the air to saturation at a constant temperature. Relative humidity is always expressed as a percentage.
+          example:
+            - 0
+            - 51
+            - 55
+            - 100
+        snow24Hour:
+          type: array
+          items: {}
+          description: 'Twenty-four hour snowfall amount. Note: This field will be NULL outside of CONUS and Europe'
+          example:
+            - 0
+            - 0.06
+            - 'null'
+        sunriseTimeLocal:
+          type: array
+          items: {}
+          description: This field contains the local time of the sunrise. It reflects any local daylight savings conventions. For a few Arctic and Antarctic regions, the Sunrise and Sunset data values may be the same (each with a value of 12:01am) to reflect conditions where a sunrise or sunset does not occur.
+          example:
+            - 2018-06-11T07:00:00-0400
+            - 2018-06-12T07:00:00-0400
+            - 2018-06-13T07:00:00-0400
+            - 2018-06-14T07:00:00-0400
+        sunriseTimeUtc:
+          type: array
+          items: {}
+          description: Sunrise time in UNIX epoch value
+          example:
+            - 1528714800
+            - 1528801200
+            - 1528887600
+            - 1528974000
+        sunsetTimeLocal:
+          type: array
+          items: {}
+          description: This field contains the local time of the sunrset. It reflects any local daylight savings conventions. For a few Arctic and Antarctic regions, the Sunrise and Sunset data values may be the same (each with a value of 12:01am) to reflect conditions where a sunrise or sunset does not occur.
+          example:
+            - 2018-06-11T07:00:00-0400
+            - 2018-06-12T07:00:00-0400
+            - 2018-06-13T07:00:00-0400
+            - 2018-06-14T07:00:00-0400
+        sunsetTimeUtc:
+          type: array
+          items: {}
+          description: Sunset time in UNIX epoch value
+          example:
+            - 1528714800
+            - 1528801200
+            - 1528887600
+            - 1528974000
+        temperatureHeatIndex:
+          type: array
+          items: {}
+          description: An apparent temperature. It represents what the air temperature “feels like”; on exposed human skin due to the combined effect of warm temperatures and high humidity. When the temperature is 70°F or higher, the Feels Like value represents the computed Heat Index. For temperatures between 40°F and 70°F, the Feels Like value and Temperature are the same, regardless of wind speed and humidity, so use the Temperature value.
+          example:
+            - 89
+            - 98
+        temperatureMax24Hour:
+          type: array
+          items: {}
+          description: 'Max temperature in the last 24 hours Note: This field will be NULL outside of CONUS and Europe.'
+          example:
+            - 64
+            - 90
+            - 'null'
+        temperatureMaxSince7Am:
+          type: array
+          items: {}
+          description: 'Max temperature since 7 A.M. Note: This field will be NULL outside of CONUS and Europe.'
+          example:
+            - 64
+            - 90
+            - 'null'
+        temperatureMin24Hour:
+          type: array
+          items: {}
+          description: 'Min temperature in the last 24 hours Note: This field will be NULL outside of CONUS and Europe.'
+          example:
+            - 64
+            - 67
+            - 'null'
+        temperatureWindChill:
+          type: array
+          items: {}
+          description: An apparent temperature. It represents what the air temperature “feels like”; on exposed human skin due to the combined effect of the cold temperatures and wind speed. When the temperature is 61°F or lower the Feels Like value represents the computed Wind Chill so display the Wind Chill value. For temperatures between 61°F and 75°F, the Feels Like value and Temperature are the same, regardless of wind speed and humidity, so display the Temperature value.
+          example:
+            - -34
+            - 61
+            - 66
+        uvDescription:
+          type: array
+          items: {}
+          description: The UV Index Description which complements the UV Index value by providing an associated level of risk of skin damage due to exposure. -2 = Not Available, -1 = No Report, 0 to 2 = Low, 3 to 5 = Moderate, 6 to 7 = High, 8 to 10 = Very High, 11 to 16 = Extreme
+          example:
+            - Not Available
+            - No Report
+            - Low
+            - Moderate
+            - High
+            - Very High
+            - Extreme
+        uvIndex:
+          type: array
+          items: {}
+          description: TWC-created UV index
+          example:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+            - 5
+            - 6
+            - 7
+            - 8
+            - 9
+            - 10
+            - 11
+        validTimeLocal:
+          type: array
+          items: {}
+          description: Time observation is valid in UNIX seconds
+          example:
+            - 2018-06-11T07:00:00-0400
+            - 2018-06-12T07:00:00-0400
+            - 2018-06-13T07:00:00-0400
+            - 2018-06-14T07:00:00-0400
+        validTimeUtc:
+          type: array
+          items: {}
+          description: Time observation is valid in local apparent time
+          example:
+            - 1528714800
+            - 1528801200
+            - 1528887600
+            - 1528974000
+        visibility:
+          type: array
+          items: {}
+          description: The horizontal visibility at the observation point. Visibilities can be reported as fractional values particularly when visibility is less than 2 miles. Visibilities greater than 10 statute miles(16.1 kilometers) which are considered “unlimited” are reported as “999” in your feed. You can also find visibility values that equal zero. This occurrence is not wrong. Dense fogs and heavy snows can produce values near zero. Fog, smoke, heavy rain and other weather phenomena can reduce visibility to near zero miles or kilometers.
+          example:
+            - 0
+            - 1
+            - 2
+            - 10
+            - 999
+            - 'null'
+        windDirection:
+          type: array
+          items: {}
+          description: The direction from which the wind blows expressed in degrees. The magnetic direction varies from 0 to 359 degrees, where 0° indicates the North, 90° the East, 180° the South, 270° the West, and so forth.
+          example:
+            - 60
+            - 110
+        windDirectionCardinal:
+          type: array
+          items: {}
+          description: This field contains the cardinal direction from which the wind blows in an abbreviated form. Wind directions are always expressed as “from whence the wind blows” meaning that a North wind blows from North to South. If you face North in a North wind, the wind is at your face. Face southward and the North wind is at your back.
+          example:
+            - 'N'
+            - NNE
+            - NE
+            - ENE
+            - E
+            - ESE
+            - SE
+            - SSE
+            - S
+            - SSW
+            - SW
+            - WSW
+            - W
+            - WNW
+            - NW
+            - NNW
+            - CALM
+        windGust:
+          type: array
+          items: {}
+          description: This data field contains information about sudden and temporary variations of the average Wind Speed. The report always shows the maximum wind gust speed recorded during the observation period. It is a required display field if Wind Speed is shown. The speed of the gust can be expressed in miles per hour or kilometers per hour.
+          example:
+            - 28
+            - 'null'
+        windSpeed:
+          type: array
+          items: {}
+          description: The wind is treated as a vector; hence, winds must have direction and magnitude (speed). The wind information reported in the hourly current conditions corresponds to a 10-minute average called the sustained wind speed. Sudden or brief variations in the wind speed are known as “wind gusts” and are reported in a separate data field. Wind directions are always expressed as from whence the wind blows meaning that a North wind blows from North to South. If you face North in a North wind the wind is at your face. Face southward and the North wind is at your back.
+          example:
+            - 8
+            - 9
+        wxPhraseLong:
+          type: array
+          items: {}
+          description: A text description of the observed weather conditions at the location
+          example:
+            - Partly Cloudy
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: apiKey
+      in: query
+security:
+  - api_key: []
+tags:
+  - name: By Geocode
+    description: ''
